@@ -1,0 +1,24 @@
+#%PAM-1.0
+#
+auth      [success=2 default=ignore]    pam_exec.so quiet /usr/local/sbin/2fa-cache check 1920
+auth      [success=1 default=ignore]    pam_access.so accessfile=/etc/security/2fa_networks.conf
+auth      required      pam_radius_auth.so prompt=Verification_Code
+auth      sufficient    pam_ssh_user_auth.so
+auth      substack      password-auth
+auth      include       postlogin
+
+account   required      pam_sepermit.so
+account   required      pam_nologin.so
+account   include       password-auth
+
+password  include       password-auth
+
+session   required      pam_selinux.so close
+session   required      pam_loginuid.so
+session   required      pam_selinux.so open env_params
+session   required      pam_namespace.so
+session   optional      pam_exec.so quiet /usr/local/sbin/2fa-cache add
+session   optional      pam_keyinit.so force revoke
+session   optional      pam_motd.so
+session   include       password-auth
+session   include       postlogin

@@ -1,0 +1,5 @@
+
+  This host utilizes two-factor authentication via a local RADIUS service.
+  Set up your two-factor codes at [https://passord.uio.no/]
+
+~
